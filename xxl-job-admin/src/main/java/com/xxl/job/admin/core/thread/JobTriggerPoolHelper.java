@@ -5,7 +5,6 @@ import com.xxl.job.admin.core.trigger.XxlJobTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,7 +21,7 @@ public class JobTriggerPoolHelper {
 
     // fast/slow thread pool
     private ThreadPoolExecutor fastTriggerPool = new ThreadPoolExecutor(
-            8,
+            50,
             200,
             60L,
             TimeUnit.SECONDS,
@@ -35,7 +34,7 @@ public class JobTriggerPoolHelper {
             });
 
     private ThreadPoolExecutor slowTriggerPool = new ThreadPoolExecutor(
-            0,
+            10,
             100,
             60L,
             TimeUnit.SECONDS,
@@ -50,7 +49,7 @@ public class JobTriggerPoolHelper {
 
     // job timeout count
     private volatile long minTim = System.currentTimeMillis()/60000;     // ms > min
-    private volatile ConcurrentHashMap<Integer, AtomicInteger> jobTimeoutCountMap = new ConcurrentHashMap<>();
+    private volatile ConcurrentMap<Integer, AtomicInteger> jobTimeoutCountMap = new ConcurrentHashMap<>();
 
 
     /**
