@@ -126,7 +126,7 @@ $(function() {
 	                			var codeBtn = "";
                                 if ('BEAN' != row.glueType) {
 									var codeUrl = base_url +'/jobcode?jobId='+ row.id;
-									codeBtn = '<button class="btn btn-warning btn-xs" type="button" onclick="javascript:window.open(\'' + codeUrl + '\')" >GLUE</button>  '
+									codeBtn = '<a href="'+ codeUrl +'" target="_blank" > <button class="btn btn-warning btn-xs" type="button" >GLUE</button> </a> '
 								}
 
 								// html
@@ -134,7 +134,7 @@ $(function() {
 								var html = '<p id="'+ row.id +'" >'+
 									'<button class="btn btn-primary btn-xs job_trigger" type="button">'+ I18n.jobinfo_opt_run +'</button>  '+
                                     start_stop +
-									'<button class="btn btn-primary btn-xs" type="job_del" type="button" onclick="javascript:window.open(\'' + logUrl + '\')" >'+ I18n.jobinfo_opt_log +'</button><br>  '+
+									'<a href="'+ logUrl +'"> <button class="btn btn-primary btn-xs" type="job_del" type="button" >'+ I18n.jobinfo_opt_log +'</button> </a> <br>  '+
 									'<button class="btn btn-warning btn-xs update" type="button">'+ I18n.system_opt_edit +'</button>  '+
 									codeBtn +
 									'<button class="btn btn-danger btn-xs job_operate" _type="job_del" type="button">'+ I18n.system_opt_del +'</button>  '+
@@ -227,28 +227,15 @@ $(function() {
 				dataType : "json",
 				success : function(data){
 					if (data.code == 200) {
-
-						layer.open({
-							title: I18n.system_tips,
-                            btn: [ I18n.system_ok ],
-							content: typeName + I18n.system_success ,
-							icon: '1',
-							end: function(layero, index){
-								if (needFresh) {
-									//window.location.reload();
-									jobTable.fnDraw(false);
-								}
-							}
-						});
+                        layer.msg( typeName + I18n.system_success );
+                        if (needFresh) {
+                            //window.location.reload();
+                            jobTable.fnDraw(false);
+                        }
 					} else {
-						layer.open({
-							title: I18n.system_tips,
-                            btn: [ I18n.system_ok ],
-							content: (data.msg || typeName + I18n.system_fail ),
-							icon: '2'
-						});
+                        layer.msg( data.msg || typeName + I18n.system_fail );
 					}
-				},
+				}
 			});
 		});
 	});
@@ -276,19 +263,9 @@ $(function() {
                 if (data.code == 200) {
                     $('#jobTriggerModal').modal('hide');
 
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [ I18n.system_ok ],
-                        content: I18n.jobinfo_opt_run + I18n.system_success ,
-                        icon: '1'
-                    });
+                    layer.msg( I18n.jobinfo_opt_run + I18n.system_success );
                 } else {
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [ I18n.system_ok ],
-                        content: (data.msg || I18n.jobinfo_opt_run + I18n.system_fail ),
-                        icon: '2'
-                    });
+                    layer.msg( data.msg || I18n.jobinfo_opt_run + I18n.system_fail );
                 }
             }
         });
